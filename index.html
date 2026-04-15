@@ -102,104 +102,139 @@
         .burger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
 
         /* ==============================================
-           HERO — Full-Impact Asymmetric
+           HERO — Cinematic Particle Constellation
            ============================================== */
         .hero{
             min-height:100vh;display:flex;align-items:center;
-            position:relative;overflow:hidden;padding:100px 0 60px;
+            position:relative;overflow:hidden;padding:140px 0 80px;
         }
 
-        /* Animated grid floor */
-        .hero-floor{
-            position:absolute;bottom:0;left:-50%;right:-50%;height:60%;
-            background-image:
-                linear-gradient(rgba(0,255,106,.07) 1px,transparent 1px),
-                linear-gradient(90deg,rgba(0,255,106,.07) 1px,transparent 1px);
-            background-size:80px 80px;
-            transform:perspective(400px) rotateX(60deg);transform-origin:center bottom;
-            animation:gridMove 25s linear infinite;
-            mask-image:linear-gradient(to top,white 20%,transparent 80%);-webkit-mask-image:linear-gradient(to top,white 20%,transparent 80%);
-        }
-        @keyframes gridMove{0%{background-position:0 0}100%{background-position:0 80px}}
-
-        /* Floating 3D shapes */
-        .hero-shapes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-        .h-shape{
-            position:absolute;border:1px solid rgba(0,255,106,.12);
-            animation:floatShape 12s ease-in-out infinite;
-        }
-        .h-shape--1{width:120px;height:120px;top:15%;right:12%;transform:rotate(45deg);border-radius:4px;animation-delay:0s}
-        .h-shape--2{width:60px;height:60px;top:55%;right:25%;border-radius:50%;animation-delay:3s}
-        .h-shape--3{width:80px;height:80px;bottom:25%;right:8%;transform:rotate(20deg);animation-delay:6s}
-        .h-shape--4{width:40px;height:40px;top:30%;left:70%;transform:rotate(60deg);border-radius:2px;animation-delay:1.5s}
-        @keyframes floatShape{
-            0%,100%{transform:translateY(0) rotate(var(--r,45deg));opacity:.3}
-            50%{transform:translateY(-25px) rotate(calc(var(--r,45deg) + 15deg));opacity:.6}
-        }
-        .h-shape--1{--r:45deg}.h-shape--2{--r:0deg}.h-shape--3{--r:20deg}.h-shape--4{--r:60deg}
-
-        /* Neon orb */
-        .hero-orb{
-            position:absolute;width:500px;height:500px;right:-5%;top:5%;
-            background:radial-gradient(circle,var(--neon15) 0%,transparent 70%);
-            filter:blur(80px);animation:orbPulse 8s ease-in-out infinite;pointer-events:none;
-        }
-        @keyframes orbPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.5;transform:scale(1.1)}}
-
-        .hero .wrap{position:relative;z-index:2;width:100%}
-
-        .hero-inner{
-            display:grid;grid-template-columns:1fr auto;align-items:center;gap:60px;
+        /* Canvas particle background */
+        .hero-canvas{
+            position:absolute;inset:0;z-index:0;
         }
 
-        .hero-text{max-width:700px}
+        /* Scanning line — sweeps down periodically */
+        .hero-scanline{
+            position:absolute;left:0;right:0;height:1px;z-index:1;pointer-events:none;
+            background:linear-gradient(90deg,transparent,var(--blue),var(--neon),var(--blue),transparent);
+            opacity:.4;animation:scanMove 6s ease-in-out infinite;
+        }
+        @keyframes scanMove{
+            0%{top:-2px;opacity:0}
+            10%{opacity:.4}
+            90%{opacity:.4}
+            100%{top:100%;opacity:0}
+        }
 
-        /* Marquee badge */
+        /* Corner bracket framing */
+        .hero-bracket{
+            position:absolute;width:40px;height:40px;z-index:2;pointer-events:none;
+        }
+        .hero-bracket--tl{top:clamp(80px,12vh,120px);left:clamp(20px,5vw,60px);border-top:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(255,255,255,.08)}
+        .hero-bracket--tr{top:clamp(80px,12vh,120px);right:clamp(20px,5vw,60px);border-top:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08)}
+        .hero-bracket--bl{bottom:40px;left:clamp(20px,5vw,60px);border-bottom:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(255,255,255,.08)}
+        .hero-bracket--br{bottom:40px;right:clamp(20px,5vw,60px);border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08)}
+
+        .hero .wrap{position:relative;z-index:3;width:100%}
+
+        .hero-layout{
+            display:flex;flex-direction:column;gap:0;
+        }
+
+        /* Eyebrow row — tech readout style */
+        .hero-eyebrow{
+            display:flex;align-items:center;justify-content:space-between;
+            margin-bottom:52px;gap:20px;
+        }
         .hero-badge{
             display:inline-flex;align-items:center;gap:10px;
-            border:1px solid rgba(0,255,106,.15);border-radius:100px;
-            padding:6px 20px 6px 6px;margin-bottom:48px;
-            font-family:var(--ff);font-size:.55rem;font-weight:500;
+            border:1px solid rgba(255,255,255,.06);border-radius:100px;
+            padding:6px 20px 6px 6px;
+            font-family:var(--ff);font-size:.5rem;font-weight:500;
             letter-spacing:3px;text-transform:uppercase;color:var(--grey);
         }
         .hero-badge-dot{
-            width:28px;height:28px;border-radius:50%;
-            background:var(--neon06);display:flex;align-items:center;justify-content:center;
+            width:24px;height:24px;border-radius:50%;
+            background:rgba(0,255,106,.04);display:flex;align-items:center;justify-content:center;
         }
-        .hero-badge-dot span{width:6px;height:6px;border-radius:50%;background:var(--neon);animation:blink 2s ease-in-out infinite}
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+        .hero-badge-dot span{width:5px;height:5px;border-radius:50%;background:var(--neon);animation:blink 2s ease-in-out infinite}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
 
+        .hero-coords{
+            font-family:var(--ff);font-size:.5rem;font-weight:400;
+            letter-spacing:2px;text-transform:uppercase;color:var(--grey-dark);
+        }
+        .hero-coords .blue-txt{color:var(--blue)}
+
+        /* Main headline — full-width cinematic */
         .hero-title{
-            font-family:var(--ff);font-size:clamp(2rem,6.5vw,4.8rem);
-            font-weight:900;line-height:1.05;letter-spacing:-1px;
-            text-transform:uppercase;margin-bottom:28px;
+            font-family:var(--ff);font-size:clamp(2.4rem,7.5vw,5.5rem);
+            font-weight:900;line-height:1;letter-spacing:-2px;
+            text-transform:uppercase;margin-bottom:0;
         }
-        .hero-title .neon{color:var(--neon);text-shadow:0 0 60px var(--neon15)}
+        .hero-title-row{
+            display:block;overflow:hidden;
+        }
+        .hero-title-row span{
+            display:inline-block;
+        }
+        /* Outline text — hollow stroke */
+        .hero-title .outline{
+            color:transparent;
+            -webkit-text-stroke:1.5px rgba(255,255,255,.25);
+        }
+        .hero-title .neon{
+            color:var(--neon);-webkit-text-stroke:0;
+            text-shadow:0 0 80px var(--neon15),0 0 30px rgba(0,255,106,.1);
+        }
+        .hero-title .blue-glow{
+            color:var(--blue);-webkit-text-stroke:0;
+            text-shadow:0 0 60px var(--blue15);
+        }
 
-        /* Glitch hover effect on headline */
-        .hero-title:hover .glitch-target{animation:glitch .4s ease}
-        @keyframes glitch{
-            0%{text-shadow:2px 0 var(--neon),-2px 0 #ff0040}
-            25%{text-shadow:-2px -1px var(--neon),2px 1px #ff0040}
-            50%{text-shadow:1px 2px var(--neon),-1px -2px #ff0040}
-            100%{text-shadow:0 0 0 transparent}
+        /* Middle content row */
+        .hero-mid{
+            display:flex;align-items:flex-end;justify-content:space-between;gap:40px;
+            margin-top:52px;
         }
+        .hero-mid-left{max-width:420px}
 
         .hero-sub{
-            font-size:clamp(.88rem,1.3vw,1.05rem);color:var(--grey);line-height:1.85;
-            max-width:480px;margin-bottom:52px;font-weight:300;
+            font-size:clamp(.85rem,1.2vw,1rem);color:var(--grey);line-height:1.85;
+            font-weight:300;margin-bottom:40px;
         }
 
-        .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+        .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
 
-        /* Vertical text on right side */
-        .hero-vertical{
-            writing-mode:vertical-rl;text-orientation:mixed;
-            font-family:var(--ff);font-size:.55rem;font-weight:500;
-            letter-spacing:4px;text-transform:uppercase;color:var(--grey-dark);
-            display:flex;align-items:center;gap:16px;
+        /* Right side stats */
+        .hero-stats{
+            display:flex;gap:36px;padding-bottom:8px;
         }
-        .hero-vertical::before{content:'';width:1px;height:60px;background:var(--grey-dark)}
+        .hero-stat{text-align:right}
+        .hero-stat-num{
+            font-family:var(--ff);font-size:1.6rem;font-weight:800;color:var(--white);line-height:1;
+        }
+        .hero-stat-num em{font-style:normal;color:var(--neon);font-size:1rem}
+        .hero-stat-label{
+            font-family:var(--ff);font-size:.45rem;font-weight:500;
+            letter-spacing:3px;text-transform:uppercase;color:var(--grey-dark);margin-top:6px;
+        }
+
+        /* Bottom status bar */
+        .hero-status{
+            display:flex;align-items:center;justify-content:space-between;
+            margin-top:72px;padding-top:24px;
+            border-top:1px solid rgba(255,255,255,.04);
+        }
+        .hero-status-item{
+            display:flex;align-items:center;gap:8px;
+            font-family:var(--ff);font-size:.45rem;font-weight:500;
+            letter-spacing:3px;text-transform:uppercase;color:var(--grey-dark);
+        }
+        .hero-status-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+        .hero-status-dot.green{background:var(--neon)}
+        .hero-status-dot.blue{background:var(--blue)}
 
         /* ==============================================
            BUTTONS
@@ -759,8 +794,8 @@
            RESPONSIVE
            ============================================== */
         @media(max-width:1024px){
-            .hero-inner{grid-template-columns:1fr}
-            .hero-vertical{display:none}
+            .hero-stats{display:none}
+            .hero-mid{flex-direction:column;align-items:flex-start}
         }
         @media(max-width:768px){
             .nav-menu{
@@ -770,7 +805,13 @@
             .nav-menu.open{display:flex}
             .nav-menu a{font-size:.9rem}
             .burger{display:flex}
-            .hero{min-height:auto;padding:120px 0 60px}
+            .hero{min-height:auto;padding:120px 0 40px}
+            .hero-bracket{display:none}
+            .hero-coords{display:none}
+            .hero-eyebrow{margin-bottom:32px}
+            .hero-mid{margin-top:32px}
+            .hero-status{margin-top:40px;flex-wrap:wrap;gap:12px}
+            .hero-title{letter-spacing:-1px}
             .about-inner{grid-template-columns:1fr;gap:60px}
             .about-img-col{max-width:340px;margin:0 auto}
             .about-chip{right:0;bottom:-16px}
@@ -822,6 +863,7 @@
             <li><a href="#services">Services</a></li>
             <li><a href="#websites">Websites</a></li>
             <li><a href="#work">Work</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
             <li><a href="#process">Process</a></li>
             <li><a href="#contact" class="cta-link">Free Sample</a></li>
         </ul>
@@ -831,41 +873,59 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
-    <div class="hero-floor"></div>
-    <div class="hero-shapes">
-        <div class="h-shape h-shape--1"></div>
-        <div class="h-shape h-shape--2"></div>
-        <div class="h-shape h-shape--3"></div>
-        <div class="h-shape h-shape--4"></div>
-    </div>
-    <div class="hero-orb"></div>
+    <canvas class="hero-canvas" id="heroCanvas"></canvas>
+    <div class="hero-scanline"></div>
+    <div class="hero-bracket hero-bracket--tl"></div>
+    <div class="hero-bracket hero-bracket--tr"></div>
+    <div class="hero-bracket hero-bracket--bl"></div>
+    <div class="hero-bracket hero-bracket--br"></div>
 
     <div class="wrap">
-        <div class="hero-inner">
-            <div class="hero-text">
-                <div class="hero-badge" data-r="u">
+        <div class="hero-layout">
+            <div class="hero-eyebrow" data-r="u">
+                <div class="hero-badge">
                     <div class="hero-badge-dot"><span></span></div>
                     Available for Projects
                 </div>
-                <h1 class="hero-title" data-r="u" data-d="1">
-                    <span class="glitch-target">Turn Your Brand</span><br>
-                    <span class="glitch-target">Into a</span><br>
-                    <span class="glitch-target neon">Customer</span><br>
-                    <span class="glitch-target neon">Magnet.</span>
-                </h1>
-                <p class="hero-sub" data-r="u" data-d="2">
-                    I help small businesses build stunning websites and create clean, AI&#8209;driven social media content systems that drive real growth — so you can focus on running your business.
-                </p>
-                <div class="hero-actions" data-r="u" data-d="3">
-                    <a href="#contact" class="btn btn-p">
-                        Get a Free Sample Post
-                        <svg class="arrow-svg" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                    </a>
-                    <a href="#work" class="btn btn-g">View My Work</a>
+                <div class="hero-coords">SYS.<span class="blue-txt">ONLINE</span> &mdash; 2026</div>
+            </div>
+
+            <h1 class="hero-title">
+                <div class="hero-title-row" data-r="u" data-d="1"><span>Turn Your</span> <span class="outline">Brand</span></div>
+                <div class="hero-title-row" data-r="u" data-d="2"><span class="outline">Into</span> <span>a Customer</span></div>
+                <div class="hero-title-row" data-r="u" data-d="3"><span class="neon">Magnet</span><span class="blue-glow">.</span></div>
+            </h1>
+
+            <div class="hero-mid" data-r="u" data-d="4">
+                <div class="hero-mid-left">
+                    <p class="hero-sub">
+                        I help small businesses build stunning websites and create clean, AI&#8209;driven social media content systems that drive real growth &mdash; so you can focus on running your business.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn btn-p">
+                            Get a Free Sample
+                            <svg class="arrow-svg" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                        <a href="#work" class="btn btn-g">View Work</a>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-num">50<em>+</em></div>
+                        <div class="hero-stat-label">Projects</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num">100<em>%</em></div>
+                        <div class="hero-stat-label">Satisfaction</div>
+                    </div>
                 </div>
             </div>
-            <div class="hero-vertical" data-r="r" data-d="4">
-                Designer & Web Developer
+
+            <div class="hero-status" data-r="u" data-d="5">
+                <div class="hero-status-item"><div class="hero-status-dot green"></div>Web Development</div>
+                <div class="hero-status-item"><div class="hero-status-dot blue"></div>Social Media Design</div>
+                <div class="hero-status-item"><div class="hero-status-dot green"></div>AI Strategy</div>
+                <div class="hero-status-item"><div class="hero-status-dot blue"></div>Brand Identity</div>
             </div>
         </div>
     </div>
@@ -1320,6 +1380,70 @@
         loaderCount.textContent=count;
         loaderFill.style.width=count+'%';
     },40);
+
+    // === HERO CANVAS — Particle Constellation ===
+    const canvas=$('#heroCanvas'),ctx=canvas.getContext('2d');
+    let particles=[];
+    const PARTICLE_COUNT=60;
+    const CONNECT_DIST=140;
+    let cW,cH,animId;
+
+    function resizeCanvas(){
+        const hero=canvas.parentElement;
+        cW=canvas.width=hero.offsetWidth;
+        cH=canvas.height=hero.offsetHeight;
+    }
+
+    function createParticles(){
+        particles=[];
+        for(let i=0;i<PARTICLE_COUNT;i++){
+            const isBlue=Math.random()>.7;
+            particles.push({
+                x:Math.random()*cW,
+                y:Math.random()*cH,
+                vx:(Math.random()-.5)*.3,
+                vy:(Math.random()-.5)*.3,
+                r:Math.random()*1.5+.5,
+                color:isBlue?'0,136,255':'0,255,106',
+                alpha:Math.random()*.4+.1
+            });
+        }
+    }
+
+    function drawParticles(){
+        ctx.clearRect(0,0,cW,cH);
+        // Draw connection lines
+        for(let i=0;i<particles.length;i++){
+            for(let j=i+1;j<particles.length;j++){
+                const dx=particles[i].x-particles[j].x;
+                const dy=particles[i].y-particles[j].y;
+                const dist=Math.sqrt(dx*dx+dy*dy);
+                if(dist<CONNECT_DIST){
+                    const opacity=(.08*(1-dist/CONNECT_DIST)).toFixed(3);
+                    ctx.strokeStyle='rgba(255,255,255,'+opacity+')';
+                    ctx.lineWidth=.5;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x,particles[i].y);
+                    ctx.lineTo(particles[j].x,particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        // Draw particles
+        for(const p of particles){
+            p.x+=p.vx;p.y+=p.vy;
+            if(p.x<0||p.x>cW)p.vx*=-1;
+            if(p.y<0||p.y>cH)p.vy*=-1;
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle='rgba('+p.color+','+p.alpha+')';
+            ctx.fill();
+        }
+        animId=requestAnimationFrame(drawParticles);
+    }
+
+    resizeCanvas();createParticles();drawParticles();
+    window.addEventListener('resize',()=>{resizeCanvas();createParticles()});
 
     // === CUSTOM CURSOR (desktop only) ===
     const cursor=$('#cursor');
