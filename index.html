@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="S Designs — Premium social media content, AI strategy & high-converting websites for small businesses. From Instagram content to full website builds.">
+    <title>S Designs — Social Media That Sells | Shabir Ahmad</title>
+
+    <!-- Orbitron (matches Heading.png) + Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==============================================
+           RESET
+           ============================================== */
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+        body{font-family:'Inter',sans-serif;background:#000;color:#fff;overflow-x:hidden;line-height:1.6}
+        ::selection{background:#00ff6a;color:#000}
+        img{max-width:100%;display:block}
+        a{text-decoration:none;color:inherit}
+        ul{list-style:none}
+        button{border:none;background:none;cursor:pointer;font:inherit;color:inherit}
+
+        /* ==============================================
+           TOKENS
+           ============================================== */
+        :root{
+            --black:#000;--bg:#030303;--surface:#0a0a0a;--card:#0e0e0e;
+            --white:#fff;--grey:#888;--grey-dark:#333;--grey-faint:#1a1a1a;
+            --neon:#00ff6a;--neon50:rgba(0,255,106,.5);--neon15:rgba(0,255,106,.15);--neon06:rgba(0,255,106,.06);--neon03:rgba(0,255,106,.03);
+            --blue:#0088ff;--blue15:rgba(0,136,255,.15);--blue06:rgba(0,136,255,.06);
+            --ff:'Orbitron',sans-serif;--fb:'Inter',sans-serif;
+            --ease:cubic-bezier(.16,1,.3,1);
+        }
+
+        /* ==============================================
+           NOISE GRAIN OVERLAY
+           ============================================== */
+        body::after{
+            content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
+            opacity:.03;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat:repeat;background-size:256px 256px;
+        }
+
+        /* ==============================================
+           CONTAINER
+           ============================================== */
+        .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,60px)}
+
+        /* ==============================================
+           CUSTOM CURSOR
+           ============================================== */
+        .cursor{
+            position:fixed;width:20px;height:20px;border:1.5px solid var(--neon);border-radius:50%;
+            pointer-events:none;z-index:9999;transition:width .3s var(--ease),height .3s var(--ease),border-color .3s;
+            transform:translate(-50%,-50%);mix-blend-mode:difference;
+            display:none;
+        }
+        .cursor.active{width:50px;height:50px;border-color:var(--neon50)}
+
+        /* ==============================================
+           LOADER
+           ============================================== */
+        #loader{
+            position:fixed;inset:0;z-index:10000;background:var(--black);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+            transition:opacity .5s ease,visibility .5s;
+        }
+        #loader.done{opacity:0;visibility:hidden}
+        .loader-counter{font-family:var(--ff);font-size:3rem;font-weight:900;color:var(--white);letter-spacing:4px}
+        .loader-bar{width:160px;height:1px;background:var(--grey-dark);position:relative;overflow:hidden}
+        .loader-bar span{position:absolute;left:0;top:0;height:100%;width:0;background:var(--neon);box-shadow:0 0 20px var(--neon50)}
+
+        /* ==============================================
+           NAV
+           ============================================== */
+        .nav{
+            position:fixed;top:0;left:0;right:0;z-index:1000;
+            padding:22px 0;transition:all .4s var(--ease);
+        }
+        .nav.scrolled{padding:14px 0;background:rgba(0,0,0,.75);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-bottom:1px solid rgba(255,255,255,.04)}
+        .nav .wrap{display:flex;align-items:center;justify-content:space-between}
+        .nav-logo{display:flex;align-items:center;gap:12px}
+        .nav-logo img{height:32px;width:32px}
+        .nav-logo span{font-family:var(--ff);font-size:.7rem;font-weight:700;letter-spacing:4px;text-transform:uppercase}
+        .nav-menu{display:flex;align-items:center;gap:36px}
+        .nav-menu a{font-family:var(--ff);font-size:.6rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--grey);transition:color .25s}
+        .nav-menu a:hover{color:var(--white)}
+        .nav-menu .cta-link{
+            color:var(--black)!important;background:var(--neon);padding:10px 22px;border-radius:2px;
+            transition:all .3s var(--ease);box-shadow:0 0 20px var(--neon15);
+        }
+        .nav-menu .cta-link:hover{box-shadow:0 0 40px var(--neon15),0 4px 20px rgba(0,255,106,.2);transform:translateY(-2px)}
+        .burger{display:none;flex-direction:column;gap:5px;padding:8px;z-index:1001}
+        .burger span{width:20px;height:1.5px;background:var(--white);transition:.3s ease}
+        .burger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+        .burger.open span:nth-child(2){opacity:0}
+        .burger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+        /* ==============================================
+           HERO — Full-Impact Asymmetric
+           ============================================== */
+        .hero{
+            min-height:100vh;display:flex;align-items:center;
+            position:relative;overflow:hidden;padding:100px 0 60px;
+        }
+
+        /* Animated grid floor */
+        .hero-floor{
+            position:absolute;bottom:0;left:-50%;right:-50%;height:60%;
+            background-image:
+                linear-gradient(rgba(0,255,106,.07) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(0,255,106,.07) 1px,transparent 1px);
+            background-size:80px 80px;
+            transform:perspective(400px) rotateX(60deg);transform-origin:center bottom;
+            animation:gridMove 25s linear infinite;
+            mask-image:linear-gradient(to top,white 20%,transparent 80%);-webkit-mask-image:linear-gradient(to top,white 20%,transparent 80%);
+        }
+        @keyframes gridMove{0%{background-position:0 0}100%{background-position:0 80px}}
+
+        /* Floating 3D shapes */
+        .hero-shapes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+        .h-shape{
+            position:absolute;border:1px solid rgba(0,255,106,.12);
+            animation:floatShape 12s ease-in-out infinite;
+        }
+        .h-shape--1{width:120px;height:120px;top:15%;right:12%;transform:rotate(45deg);border-radius:4px;animation-delay:0s}
+        .h-shape--2{width:60px;height:60px;top:55%;right:25%;border-radius:50%;animation-delay:3s}
+        .h-shape--3{width:80px;height:80px;bottom:25%;right:8%;transform:rotate(20deg);animation-delay:6s}
+        .h-shape--4{width:40px;height:40px;top:30%;left:70%;transform:rotate(60deg);border-radius:2px;animation-delay:1.5s}
+        @keyframes floatShape{
+            0%,100%{transform:translateY(0) rotate(var(--r,45deg));opacity:.3}
+            50%{transform:translateY(-25px) rotate(calc(var(--r,45deg) + 15deg));opacity:.6}
+        }
+        .h-shape--1{--r:45deg}.h-shape--2{--r:0deg}.h-shape--3{--r:20deg}.h-shape--4{--r:60deg}
+
+        /* Neon orb */
+        .hero-orb{
+            position:absolute;width:500px;height:500px;right:-5%;top:5%;
+            background:radial-gradient(circle,var(--neon15) 0%,transparent 70%);
+            filter:blur(80px);animation:orbPulse 8s ease-in-out infinite;pointer-events:none;
+        }
+        @keyframes orbPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.5;transform:scale(1.1)}}
+
+        .hero .wrap{position:relative;z-index:2;width:100%}
+
+        .hero-inner{
+            display:grid;grid-template-columns:1fr auto;align-items:center;gap:60px;
+        }
+
+        .hero-text{max-width:700px}
+
+        /* Marquee badge */
+        .hero-badge{
+            display:inline-flex;align-items:center;gap:10px;
+            border:1px solid rgba(0,255,106,.15);border-radius:100px;
+            padding:6px 20px 6px 6px;margin-bottom:48px;
+            font-family:var(--ff);font-size:.55rem;font-weight:500;
+            letter-spacing:3px;text-transform:uppercase;color:var(--grey);
+        }
+        .hero-badge-dot{
+            width:28px;height:28px;border-radius:50%;
+            background:var(--neon06);display:flex;align-items:center;justify-content:center;
+        }
+        .hero-badge-dot span{width:6px;height:6px;border-radius:50%;background:var(--neon);animation:blink 2s ease-in-out infinite}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+        .hero-title{
+            font-family:var(--ff);font-size:clamp(2rem,6.5vw,4.8rem);
+            font-weight:900;line-height:1.05;letter-spacing:-1px;
+            text-transform:uppercase;margin-bottom:28px;
+        }
+        .hero-title .neon{color:var(--neon);text-shadow:0 0 60px var(--neon15)}
+
+        /* Glitch hover effect on headline */
+        .hero-title:hover .glitch-target{animation:glitch .4s ease}
+        @keyframes glitch{
+            0%{text-shadow:2px 0 var(--neon),-2px 0 #ff0040}
+            25%{text-shadow:-2px -1px var(--neon),2px 1px #ff0040}
+            50%{text-shadow:1px 2px var(--neon),-1px -2px #ff0040}
+            100%{text-shadow:0 0 0 transparent}
+        }
+
+        .hero-sub{
+            font-size:clamp(.88rem,1.3vw,1.05rem);color:var(--grey);line-height:1.85;
+            max-width:480px;margin-bottom:52px;font-weight:300;
+        }
+
+        .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+
+        /* Vertical text on right side */
+        .hero-vertical{
+            writing-mode:vertical-rl;text-orientation:mixed;
+            font-family:var(--ff);font-size:.55rem;font-weight:500;
+            letter-spacing:4px;text-transform:uppercase;color:var(--grey-dark);
+            display:flex;align-items:center;gap:16px;
+        }
+        .hero-vertical::before{content:'';width:1px;height:60px;background:var(--grey-dark)}
+
+        /* ==============================================
+           BUTTONS
+           ============================================== */
+        .btn{
+            display:inline-flex;align-items:center;gap:10px;
+            font-family:var(--ff);font-size:.65rem;font-weight:700;
+            letter-spacing:2px;text-transform:uppercase;
+            padding:18px 36px;border-radius:2px;
+            transition:all .3s var(--ease);position:relative;overflow:hidden;
+        }
+        .btn-p{
+            background:var(--neon);color:var(--black);
+            box-shadow:0 0 30px var(--neon15);
+        }
+        .btn-p::before{
+            content:'';position:absolute;inset:0;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+            transform:translateX(-100%);transition:transform .5s;
+        }
+        .btn-p:hover{transform:translateY(-3px);box-shadow:0 0 50px var(--neon15),0 10px 40px rgba(0,255,106,.15)}
+        .btn-p:hover::before{transform:translateX(100%)}
+        .btn-g{border:1px solid var(--grey-dark);color:var(--grey)}
+        .btn-g:hover{border-color:var(--neon);color:var(--neon);background:var(--neon03)}
+        .btn svg{transition:transform .3s ease}
+        .btn:hover svg{transform:translateX(4px)}
+
+        /* Arrow SVG */
+        .arrow-svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+        /* ==============================================
+           MARQUEE TICKER
+           ============================================== */
+        .marquee{
+            padding:28px 0;border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04);
+            overflow:hidden;position:relative;background:var(--surface);
+        }
+        .marquee-track{
+            display:flex;gap:60px;width:max-content;
+            animation:scroll-x 30s linear infinite;
+        }
+        .marquee:hover .marquee-track{animation-play-state:paused}
+        @keyframes scroll-x{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .marquee-item{
+            font-family:var(--ff);font-size:clamp(.7rem,1.2vw,.85rem);font-weight:600;
+            text-transform:uppercase;letter-spacing:3px;white-space:nowrap;
+            color:var(--grey-dark);display:flex;align-items:center;gap:60px;
+        }
+        .marquee-item .dot{width:4px;height:4px;background:var(--neon);border-radius:50%;flex-shrink:0}
+
+        /* ==============================================
+           ABOUT — Split Layout
+           ============================================== */
+        .about{padding:160px 0;position:relative}
+        .about-inner{
+            display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+        }
+        .about-img-col{position:relative}
+        .about-img-frame{
+            position:relative;width:100%;max-width:420px;aspect-ratio:1/1;
+            border-radius:8px;overflow:hidden;border:1px solid var(--grey-faint);
+        }
+        .about-img-frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%) contrast(1.05);transition:filter .5s}
+        .about-img-frame:hover img{filter:grayscale(0) contrast(1)}
+
+        /* Decorative corner brackets */
+        .about-img-frame::before,.about-img-frame::after{
+            content:'';position:absolute;width:40px;height:40px;border:1.5px solid var(--neon);z-index:2;
+            transition:all .4s var(--ease);opacity:.5;
+        }
+        .about-img-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;border-radius:8px 0 0 0}
+        .about-img-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;border-radius:0 0 8px 0}
+        .about-img-frame:hover::before,.about-img-frame:hover::after{width:60px;height:60px;opacity:1}
+
+        /* Floating stats chip */
+        .about-chip{
+            position:absolute;bottom:-24px;right:-10px;
+            background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:8px;
+            padding:18px 24px;display:flex;align-items:center;gap:14px;
+            box-shadow:0 20px 60px rgba(0,0,0,.6);
+        }
+        .about-chip-icon{
+            width:40px;height:40px;border-radius:8px;background:var(--neon06);
+            display:flex;align-items:center;justify-content:center;
+        }
+        .about-chip-icon svg{width:18px;height:18px;stroke:var(--neon);fill:none;stroke-width:2}
+        .about-chip-text h4{font-family:var(--ff);font-size:.85rem;font-weight:700;color:var(--neon)}
+        .about-chip-text p{font-size:.6rem;color:var(--grey);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+
+        .about-text-col .label{margin-bottom:28px}
+        .about-text-col .heading-lg{
+            font-family:var(--ff);font-size:clamp(1.6rem,4vw,2.6rem);
+            font-weight:800;text-transform:uppercase;letter-spacing:-1px;line-height:1.1;
+            margin-bottom:32px;
+        }
+        .about-text-col .body{color:var(--grey);font-size:.92rem;line-height:1.85;font-weight:300;margin-bottom:20px}
+        .about-text-col .body strong{color:var(--white);font-weight:500}
+
+        /* Stats */
+        .about-stats{display:flex;gap:40px;margin-top:48px;padding-top:36px;border-top:1px solid rgba(255,255,255,.04)}
+        .about-stat h3{font-family:var(--ff);font-size:1.8rem;font-weight:900;line-height:1;color:var(--white)}
+        .about-stat h3 em{font-style:normal;color:var(--neon)}
+        .about-stat p{font-size:.6rem;color:var(--grey);letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+
+        /* ==============================================
+           LABEL
+           ============================================== */
+        .label{
+            font-family:var(--ff);font-size:.6rem;font-weight:500;letter-spacing:4px;
+            text-transform:uppercase;color:var(--neon);display:inline-flex;align-items:center;gap:12px;
+        }
+        .label::before{content:'';width:28px;height:1px;background:var(--neon)}
+
+        /* ==============================================
+            SERVICES — Bold Cards
+           ============================================== */
+        .services{padding:160px 0;background:var(--surface)}
+        .services-top{
+            display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:80px;
+        }
+        .services-top-left{max-width:480px}
+        .services-top-left .label{margin-bottom:20px}
+        .services-top-left h2{
+            font-family:var(--ff);font-size:clamp(1.6rem,4vw,2.6rem);
+            font-weight:800;text-transform:uppercase;line-height:1.1;letter-spacing:-1px;
+        }
+        .services-top-right{max-width:320px}
+        .services-top-right p{color:var(--grey);font-size:.88rem;line-height:1.75;font-weight:300}
+
+        .services-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--grey-faint);border-radius:10px;overflow:hidden}
+        .s-card{
+            background:var(--card);padding:52px 40px;position:relative;overflow:hidden;
+            transition:all .5s var(--ease);cursor:default;
+        }
+        .s-card::before{
+            content:'';position:absolute;inset:0;
+            background:linear-gradient(135deg,var(--neon03) 0%,transparent 60%);
+            opacity:0;transition:opacity .5s;
+        }
+        .s-card:hover{background:var(--bg)}
+        .s-card:hover::before{opacity:1}
+        .s-card-num{
+            font-family:var(--ff);font-size:5rem;font-weight:900;
+            color:var(--grey-faint);line-height:1;margin-bottom:32px;
+            transition:color .4s var(--ease);position:relative;z-index:1;
+        }
+        .s-card:hover .s-card-num{color:var(--neon);text-shadow:0 0 60px var(--neon15)}
+        .s-card h3{
+            font-family:var(--ff);font-size:.85rem;font-weight:700;text-transform:uppercase;
+            letter-spacing:1px;margin-bottom:16px;position:relative;z-index:1;
+        }
+        .s-card p{color:var(--grey);font-size:.85rem;line-height:1.8;font-weight:300;position:relative;z-index:1}
+
+        /* Animated gradient border on hover */
+        .s-card::after{
+            content:'';position:absolute;top:0;left:0;right:0;height:2px;
+            background:linear-gradient(90deg,transparent,var(--neon),transparent);
+            transform:scaleX(0);transition:transform .5s var(--ease);transform-origin:left;
+        }
+        .s-card:hover::after{transform:scaleX(1)}
+
+        /* ==============================================
+           WEBSITES SHOWCASE
+           ============================================== */
+        .websites{padding:160px 0;overflow:hidden}
+        .websites-header{margin-bottom:72px}
+        .websites-header .label{margin-bottom:20px}
+        .websites-header h2{
+            font-family:var(--ff);font-size:clamp(1.6rem,4vw,2.6rem);
+            font-weight:800;text-transform:uppercase;line-height:1.1;letter-spacing:-1px;
+        }
+        .websites-header p{color:var(--grey);font-size:.92rem;margin-top:16px;font-weight:300;max-width:500px}
+
+        .websites-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+
+        .web-card{
+            position:relative;border-radius:12px;overflow:hidden;
+            background:var(--card);border:1px solid var(--grey-faint);
+            transition:all .5s var(--ease);cursor:pointer;
+        }
+        .web-card:hover{
+            border-color:rgba(0,255,106,.15);
+            box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 40px var(--neon06);
+            transform:translateY(-6px);
+        }
+
+        /* Browser chrome bar */
+        .web-card-bar{
+            display:flex;align-items:center;gap:8px;
+            padding:12px 16px;
+            background:var(--surface);border-bottom:1px solid var(--grey-faint);
+        }
+        .web-dot{width:8px;height:8px;border-radius:50%}
+        .web-dot--r{background:#ff5f57}
+        .web-dot--y{background:#febc2e}
+        .web-dot--g{background:#28c840}
+        .web-card-url{
+            flex:1;margin-left:8px;padding:4px 12px;
+            background:rgba(255,255,255,.03);border-radius:4px;
+            font-family:var(--fb);font-size:.6rem;color:var(--grey-dark);
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+        }
+
+        /* Card content */
+        .web-card-body{padding:28px 28px 32px;position:relative}
+        .web-card-category{
+            font-family:var(--ff);font-size:.5rem;font-weight:500;
+            letter-spacing:3px;text-transform:uppercase;color:var(--neon);
+            margin-bottom:10px;
+        }
+        .web-card-body h3{
+            font-family:var(--ff);font-size:1rem;font-weight:700;
+            text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;
+        }
+        .web-card-body p{color:var(--grey);font-size:.82rem;line-height:1.7;font-weight:300;margin-bottom:20px}
+
+        .web-card-link{
+            display:inline-flex;align-items:center;gap:8px;
+            font-family:var(--ff);font-size:.6rem;font-weight:600;
+            letter-spacing:2px;text-transform:uppercase;color:var(--neon);
+            transition:gap .3s var(--ease);
+        }
+        .web-card-link:hover{gap:14px}
+        .web-card-link svg{width:14px;height:14px;stroke:var(--neon);fill:none;stroke-width:2}
+
+        /* Glow corner accent */
+        .web-card::after{
+            content:'';position:absolute;top:-40%;right:-40%;width:200px;height:200px;
+            background:radial-gradient(circle,var(--neon06),transparent 70%);
+            opacity:0;transition:opacity .5s;pointer-events:none;
+        }
+        .web-card:hover::after{opacity:1}
+
+        @media(max-width:768px){
+            .websites-grid{grid-template-columns:1fr}
+        }
+
+        /* ==============================================
+           PORTFOLIO — Horizontal Scroll Gallery
+           ============================================== */
+        .portfolio{padding:160px 0;overflow:hidden}
+        .portfolio-header{margin-bottom:64px}
+        .portfolio-header .label{margin-bottom:20px}
+        .portfolio-header h2{
+            font-family:var(--ff);font-size:clamp(1.6rem,4vw,2.6rem);
+            font-weight:800;text-transform:uppercase;line-height:1.1;letter-spacing:-1px;
+        }
+        .portfolio-header p{color:var(--grey);font-size:.92rem;margin-top:16px;font-weight:300}
+
+        .portfolio-scroll{
+            display:flex;gap:20px;
+            overflow-x:auto;scroll-snap-type:x mandatory;
+            padding-bottom:20px;cursor:grab;
+            scrollbar-width:none;-ms-overflow-style:none;
+        }
+        .portfolio-scroll::-webkit-scrollbar{display:none}
+        .portfolio-scroll:active{cursor:grabbing}
+
+        .p-card{
+            flex-shrink:0;width:320px;aspect-ratio:1;
+            border-radius:8px;overflow:hidden;position:relative;
+            border:1px solid var(--grey-faint);scroll-snap-align:start;
+            transition:all .5s var(--ease);
+        }
+        .p-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(50%);transition:all .5s var(--ease)}
+        .p-card:hover{border-color:rgba(0,255,106,.2);box-shadow:0 0 40px var(--neon06)}
+        .p-card:hover img{filter:grayscale(0);transform:scale(1.06)}
+        .p-card-info{
+            position:absolute;bottom:0;left:0;right:0;
+            background:linear-gradient(transparent,rgba(0,0,0,.9));
+            padding:40px 24px 24px;transform:translateY(100%);
+            transition:transform .4s var(--ease);
+        }
+        .p-card:hover .p-card-info{transform:translateY(0)}
+        .p-card-info h4{font-family:var(--ff);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+        .p-card-info p{font-size:.65rem;color:var(--neon);margin-top:4px;letter-spacing:2px;text-transform:uppercase}
+
+        /* Scroll indicator */
+        .scroll-hint{
+            display:flex;align-items:center;gap:12px;margin-top:32px;
+            font-family:var(--ff);font-size:.55rem;letter-spacing:3px;text-transform:uppercase;
+            color:var(--grey-dark);
+        }
+        .scroll-hint::before{content:'';width:40px;height:1px;background:var(--grey-dark)}
+        .scroll-hint svg{width:16px;height:16px;stroke:var(--grey-dark);fill:none;stroke-width:2;animation:scrollX 1.5s ease-in-out infinite}
+        @keyframes scrollX{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+        /* ==============================================
+           TESTIMONIALS
+           ============================================== */
+        .testimonials{padding:160px 0;background:var(--surface)}
+        .test-header{margin-bottom:72px}
+        .test-header .label{margin-bottom:20px}
+        .test-header h2{
+            font-family:var(--ff);font-size:clamp(1.6rem,4vw,2.6rem);
+            font-weight:800;text-transform:uppercase;line-height:1.1;letter-spacing:-1px;
+        }
+        .test-header-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap}
+        .test-header p{color:var(--grey);font-size:.92rem;margin-top:16px;font-weight:300;max-width:440px}
+
+        .btn-review{
+            background:transparent;border:1px solid var(--blue);color:var(--blue);
+            padding:12px 28px;border-radius:4px;
+            font-family:var(--ff);font-size:.6rem;font-weight:600;
+            letter-spacing:2px;text-transform:uppercase;
+            cursor:pointer;transition:all .3s var(--ease);
+            display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
+        }
+        .btn-review:hover{
+            background:var(--blue06);box-shadow:0 0 20px var(--blue15);
+            transform:translateY(-2px);
+        }
+        .btn-review svg{width:14px;height:14px;stroke:var(--blue);fill:none;stroke-width:2}
+
+        .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+        .test-card{
+            background:var(--card);border:1px solid var(--grey-faint);border-radius:10px;
+            padding:36px 32px;position:relative;overflow:hidden;
+            transition:all .4s var(--ease);
+        }
+        .test-card:hover{border-color:var(--border-hover,rgba(255,255,255,.1));transform:translateY(-3px)}
+
+        /* Blue accent line on testimonial cards - secondary color usage */
+        .test-card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:2px;
+            background:linear-gradient(90deg,var(--blue),transparent);
+            opacity:.4;
+        }
+
+        .test-stars{display:flex;gap:3px;margin-bottom:20px}
+        .test-stars svg{width:14px;height:14px}
+        .star-filled{fill:var(--blue);stroke:none}
+        .star-empty{fill:none;stroke:var(--grey-dark);stroke-width:2}
+
+        .test-card blockquote{
+            font-size:.88rem;color:var(--grey);line-height:1.8;font-weight:300;
+            font-style:italic;margin-bottom:24px;
+        }
+        .test-card blockquote::before{content:'"';color:var(--blue);font-family:var(--ff);font-size:1.5rem;font-weight:900;margin-right:4px}
+
+        .test-author{display:flex;align-items:center;gap:12px}
+        .test-avatar{
+            width:36px;height:36px;border-radius:50%;background:var(--grey-faint);
+            display:flex;align-items:center;justify-content:center;
+            font-family:var(--ff);font-size:.6rem;font-weight:700;color:var(--grey);
+        }
+        .test-author-info h4{font-family:var(--ff);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+        .test-author-info p{font-size:.6rem;color:var(--grey-dark);margin-top:2px}
+
+        .test-card.user-submitted .test-avatar{background:var(--blue06);color:var(--blue)}
+
+        /* Testimonial Modal */
+        .modal-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:5000;
+            display:none;align-items:center;justify-content:center;padding:24px;
+        }
+        .modal-overlay.open{display:flex}
+
+        .modal{
+            background:var(--card);border:1px solid var(--grey-faint);border-radius:12px;
+            padding:40px;max-width:480px;width:100%;position:relative;
+            animation:modalIn .4s var(--ease);
+        }
+        @keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
+
+        .modal-close{
+            position:absolute;top:16px;right:16px;width:32px;height:32px;
+            border-radius:6px;background:var(--grey-faint);cursor:pointer;
+            display:flex;align-items:center;justify-content:center;transition:background .2s;
+        }
+        .modal-close:hover{background:var(--grey-dark)}
+        .modal-close svg{width:14px;height:14px;stroke:var(--grey);fill:none;stroke-width:2}
+
+        .modal h3{
+            font-family:var(--ff);font-size:.9rem;font-weight:700;
+            text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;
+        }
+        .modal>p{font-size:.82rem;color:var(--grey);margin-bottom:28px;font-weight:300}
+
+        .modal .f-field{margin-bottom:16px}
+
+        /* Star rating selector */
+        .star-select{display:flex;gap:6px;margin-bottom:16px}
+        .star-select label{font-family:var(--ff);font-size:.55rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--grey-dark);margin-bottom:8px;display:block}
+        .star-select-row{display:flex;gap:4px}
+        .star-btn{
+            width:32px;height:32px;border-radius:4px;background:var(--grey-faint);
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;transition:all .2s;
+        }
+        .star-btn:hover,.star-btn.active{background:var(--blue06)}
+        .star-btn svg{width:16px;height:16px;fill:var(--grey-dark);transition:fill .2s}
+        .star-btn:hover svg,.star-btn.active svg{fill:var(--blue)}
+
+        .modal-submit{width:100%;margin-top:8px;justify-content:center;background:var(--blue)!important;box-shadow:0 0 20px var(--blue15)!important}
+        .modal-submit:hover{box-shadow:0 0 30px var(--blue15),0 6px 20px rgba(0,136,255,.2)!important}
+
+        @media(max-width:768px){
+            .test-grid{grid-template-columns:1fr}
+            .test-header-row{flex-direction:column;align-items:flex-start}
+            .modal{padding:28px 20px}
+        }
+
+        /* ==============================================
+           PROCESS — Vertical Timeline
+           ============================================== */
+        .process{padding:160px 0;background:var(--surface)}
+        .process-header{text-align:center;margin-bottom:100px}
+        .process-header .label{margin-bottom:20px;justify-content:center}
+        .process-header .label::before{display:none}
+        .process-header h2{
+            font-family:var(--ff);font-size:clamp(1.6rem,4vw,2.6rem);
+            font-weight:800;text-transform:uppercase;line-height:1.1;letter-spacing:-1px;margin-bottom:16px;
+        }
+        .process-header p{color:var(--grey);font-size:.92rem;max-width:480px;margin:0 auto;font-weight:300}
+
+        .timeline{
+            max-width:700px;margin:0 auto;position:relative;
+        }
+        /* Vertical center line */
+        .timeline::before{
+            content:'';position:absolute;top:0;bottom:0;left:40px;width:1px;
+            background:linear-gradient(180deg,var(--neon),var(--neon50),var(--grey-dark));
+        }
+        .t-step{
+            display:flex;align-items:flex-start;gap:40px;padding:0 0 64px;position:relative;
+        }
+        .t-step:last-child{padding-bottom:0}
+        .t-step-marker{
+            flex-shrink:0;width:80px;height:80px;border-radius:50%;
+            background:var(--bg);border:1.5px solid var(--grey-dark);
+            display:flex;align-items:center;justify-content:center;
+            position:relative;z-index:2;transition:all .4s var(--ease);
+        }
+        .t-step-marker span{
+            font-family:var(--ff);font-size:1.1rem;font-weight:800;color:var(--grey-dark);transition:color .3s;
+        }
+        .t-step:hover .t-step-marker{border-color:var(--neon);box-shadow:0 0 40px var(--neon15)}
+        .t-step:hover .t-step-marker span{color:var(--neon)}
+        .t-step-content{padding-top:16px}
+        .t-step-content h3{
+            font-family:var(--ff);font-size:.9rem;font-weight:700;text-transform:uppercase;
+            letter-spacing:1px;margin-bottom:10px;
+        }
+        .t-step-content p{color:var(--grey);font-size:.88rem;line-height:1.8;font-weight:300;max-width:400px}
+
+        /* ==============================================
+           CONTACT — Minimal Split
+           ============================================== */
+        .contact{padding:160px 0;position:relative}
+        .contact-glow{
+            position:absolute;bottom:10%;left:50%;transform:translateX(-50%);
+            width:600px;height:600px;background:radial-gradient(circle,var(--neon15),transparent 70%);
+            filter:blur(120px);pointer-events:none;
+        }
+        .contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;position:relative;z-index:2}
+        .contact-left .label{margin-bottom:24px}
+        .contact-left h2{
+            font-family:var(--ff);font-size:clamp(1.6rem,4vw,2.6rem);
+            font-weight:800;text-transform:uppercase;line-height:1.1;letter-spacing:-1px;margin-bottom:24px;
+        }
+        .contact-left p{color:var(--grey);font-size:.92rem;line-height:1.8;font-weight:300;margin-bottom:44px;max-width:400px}
+
+        .c-links{display:flex;flex-direction:column;gap:18px}
+        .c-link{
+            display:flex;align-items:center;gap:14px;color:var(--grey);font-size:.85rem;transition:color .25s;
+        }
+        .c-link:hover{color:var(--neon)}
+        .c-link-icon{
+            width:38px;height:38px;border-radius:6px;background:var(--neon06);border:1px solid rgba(0,255,106,.08);
+            display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;
+        }
+        .c-link:hover .c-link-icon{background:var(--neon15);border-color:rgba(0,255,106,.2)}
+        .c-link-icon svg{width:16px;height:16px;stroke:var(--neon);fill:none;stroke-width:1.8}
+
+        /* Form */
+        .c-form{
+            background:var(--card);border:1px solid rgba(255,255,255,.04);border-radius:10px;
+            padding:44px;transition:border-color .3s;
+        }
+        .c-form:focus-within{border-color:rgba(0,255,106,.1)}
+        .c-form h3{font-family:var(--ff);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:32px}
+        .f-field{margin-bottom:18px}
+        .f-field label{
+            display:block;font-family:var(--ff);font-size:.55rem;font-weight:500;
+            letter-spacing:3px;text-transform:uppercase;color:var(--grey-dark);margin-bottom:8px;
+        }
+        .f-field input,.f-field textarea{
+            width:100%;padding:13px 15px;background:var(--bg);border:1px solid rgba(255,255,255,.04);
+            border-radius:4px;color:var(--white);font-family:var(--fb);font-size:.85rem;font-weight:300;
+            outline:none;transition:border-color .25s,box-shadow .25s;
+        }
+        .f-field input::placeholder,.f-field textarea::placeholder{color:var(--grey-dark)}
+        .f-field input:focus,.f-field textarea:focus{border-color:var(--neon);box-shadow:0 0 0 3px var(--neon03)}
+        .f-field textarea{resize:vertical;min-height:90px}
+        .f-submit{width:100%;margin-top:8px;justify-content:center}
+        .f-msg{
+            margin-top:14px;padding:12px 16px;border-radius:4px;font-size:.82rem;display:none;
+        }
+        .f-msg.ok{display:block;background:var(--neon06);border:1px solid rgba(0,255,106,.12);color:var(--neon)}
+        .f-msg.err{display:block;background:rgba(255,50,50,.06);border:1px solid rgba(255,50,50,.12);color:#ff5555}
+
+        /* ==============================================
+           FOOTER
+           ============================================== */
+        .footer{padding:32px 0;border-top:1px solid rgba(255,255,255,.03)}
+        .footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+        .footer-left{display:flex;align-items:center;gap:10px}
+        .footer-left img{width:20px;height:20px;opacity:.5}
+        .footer-left p{font-size:.72rem;color:var(--grey-dark)}
+        .footer-socials{display:flex;gap:10px}
+        .f-social{
+            width:34px;height:34px;border-radius:6px;background:var(--card);border:1px solid rgba(255,255,255,.04);
+            display:flex;align-items:center;justify-content:center;transition:all .3s;
+        }
+        .f-social:hover{border-color:var(--neon);background:var(--neon06);transform:translateY(-2px)}
+        .f-social svg{width:14px;height:14px;fill:var(--grey);transition:fill .2s}
+        .f-social:hover svg{fill:var(--neon)}
+
+        /* ==============================================
+           WHATSAPP FLOAT
+           ============================================== */
+        .wa{
+            position:fixed;bottom:24px;right:24px;z-index:999;width:52px;height:52px;border-radius:50%;
+            background:#25D366;display:flex;align-items:center;justify-content:center;
+            box-shadow:0 4px 20px rgba(37,211,102,.35);
+            opacity:0;transform:scale(.7) translateY(20px);pointer-events:none;
+            transition:all .4s var(--ease);
+        }
+        .wa.show{opacity:1;transform:scale(1) translateY(0);pointer-events:all}
+        .wa:hover{transform:scale(1.08) translateY(-2px);box-shadow:0 6px 30px rgba(37,211,102,.45)}
+        .wa svg{width:26px;height:26px;fill:#fff}
+        .wa::after{
+            content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid rgba(37,211,102,.3);
+            animation:waPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes waPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.2);opacity:0}}
+
+        /* ==============================================
+           SCROLL ANIMATIONS
+           ============================================== */
+        [data-r]{opacity:0;will-change:transform,opacity}
+        [data-r="u"]{transform:translateY(50px)}
+        [data-r="l"]{transform:translateX(-50px)}
+        [data-r="r"]{transform:translateX(50px)}
+        [data-r="s"]{transform:scale(.92)}
+        [data-r].v{
+            opacity:1;transform:translate(0) scale(1);
+            transition:opacity .8s var(--ease),transform .8s var(--ease);
+        }
+        [data-d="1"]{transition-delay:.1s!important}[data-d="2"]{transition-delay:.2s!important}
+        [data-d="3"]{transition-delay:.3s!important}[data-d="4"]{transition-delay:.4s!important}
+        [data-d="5"]{transition-delay:.5s!important}[data-d="6"]{transition-delay:.6s!important}
+
+        /* ==============================================
+           RESPONSIVE
+           ============================================== */
+        @media(max-width:1024px){
+            .hero-inner{grid-template-columns:1fr}
+            .hero-vertical{display:none}
+        }
+        @media(max-width:768px){
+            .nav-menu{
+                display:none;position:fixed;inset:0;background:rgba(0,0,0,.97);
+                flex-direction:column;justify-content:center;align-items:center;gap:24px;
+            }
+            .nav-menu.open{display:flex}
+            .nav-menu a{font-size:.9rem}
+            .burger{display:flex}
+            .hero{min-height:auto;padding:120px 0 60px}
+            .about-inner{grid-template-columns:1fr;gap:60px}
+            .about-img-col{max-width:340px;margin:0 auto}
+            .about-chip{right:0;bottom:-16px}
+            .about-stats{flex-wrap:wrap;gap:24px}
+            .services-top{flex-direction:column;align-items:flex-start}
+            .services-cards{grid-template-columns:1fr}
+            .s-card{padding:36px 28px}
+            .s-card-num{font-size:3.5rem}
+            .p-card{width:260px}
+            .timeline::before{left:40px}
+            .contact-inner{grid-template-columns:1fr;gap:48px}
+            .c-form{padding:28px 20px}
+            .hero-actions{flex-direction:column;align-items:stretch}
+            .btn{justify-content:center}
+            .process-header{text-align:left}
+            .process-header .label{justify-content:flex-start}
+            .process-header .label::before{display:block}
+            .wa{width:48px;height:48px;bottom:16px;right:16px}
+            .wa svg{width:22px;height:22px}
+        }
+        @media(max-width:480px){
+            .about-stats{flex-direction:column}
+            .about-img-frame{max-width:280px}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- Loader -->
+<div id="loader">
+    <div class="loader-counter" id="loaderCount">0</div>
+    <div class="loader-bar"><span id="loaderFill"></span></div>
+</div>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/923249116764?text=Hi%20Shabir!%20I%20saw%20your%20website%20and%20I%27m%20interested%20in%20professional%20social%20media%20content%20for%20my%20business.%20Can%20we%20chat%3F" target="_blank" class="wa" id="waBtn" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+    <div class="wrap">
+        <a href="#" class="nav-logo"><img src="assets/Logo (1).png" alt="S Designs"><span>S Designs</span></a>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#websites">Websites</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#contact" class="cta-link">Free Sample</a></li>
+        </ul>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+    <div class="hero-floor"></div>
+    <div class="hero-shapes">
+        <div class="h-shape h-shape--1"></div>
+        <div class="h-shape h-shape--2"></div>
+        <div class="h-shape h-shape--3"></div>
+        <div class="h-shape h-shape--4"></div>
+    </div>
+    <div class="hero-orb"></div>
+
+    <div class="wrap">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <div class="hero-badge" data-r="u">
+                    <div class="hero-badge-dot"><span></span></div>
+                    Available for Projects
+                </div>
+                <h1 class="hero-title" data-r="u" data-d="1">
+                    <span class="glitch-target">Turn Your Brand</span><br>
+                    <span class="glitch-target">Into a</span><br>
+                    <span class="glitch-target neon">Customer</span><br>
+                    <span class="glitch-target neon">Magnet.</span>
+                </h1>
+                <p class="hero-sub" data-r="u" data-d="2">
+                    I help small businesses build stunning websites and create clean, AI&#8209;driven social media content systems that drive real growth — so you can focus on running your business.
+                </p>
+                <div class="hero-actions" data-r="u" data-d="3">
+                    <a href="#contact" class="btn btn-p">
+                        Get a Free Sample Post
+                        <svg class="arrow-svg" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                    <a href="#work" class="btn btn-g">View My Work</a>
+                </div>
+            </div>
+            <div class="hero-vertical" data-r="r" data-d="4">
+                Designer & Web Developer
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MARQUEE TICKER -->
+<div class="marquee">
+    <div class="marquee-track">
+        <div class="marquee-item">Instagram Content <span class="dot"></span></div>
+        <div class="marquee-item">AI Strategy <span class="dot"></span></div>
+        <div class="marquee-item">Brand Identity <span class="dot"></span></div>
+        <div class="marquee-item">Website Development <span class="dot"></span></div>
+        <div class="marquee-item">E-Commerce Sites <span class="dot"></span></div>
+        <div class="marquee-item">Reels & Stories <span class="dot"></span></div>
+        <div class="marquee-item">Landing Pages <span class="dot"></span></div>
+        <div class="marquee-item">Profile Makeover <span class="dot"></span></div>
+        <!-- Duplicate for seamless loop -->
+        <div class="marquee-item">Instagram Content <span class="dot"></span></div>
+        <div class="marquee-item">AI Strategy <span class="dot"></span></div>
+        <div class="marquee-item">Brand Identity <span class="dot"></span></div>
+        <div class="marquee-item">Website Development <span class="dot"></span></div>
+        <div class="marquee-item">E-Commerce Sites <span class="dot"></span></div>
+        <div class="marquee-item">Reels & Stories <span class="dot"></span></div>
+        <div class="marquee-item">Landing Pages <span class="dot"></span></div>
+        <div class="marquee-item">Profile Makeover <span class="dot"></span></div>
+    </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+    <div class="wrap">
+        <div class="about-inner">
+            <div class="about-img-col" data-r="l">
+                <div class="about-img-frame">
+                    <img src="assets/Heading.png" alt="Shabir Ahmad">
+                </div>
+                <div class="about-chip">
+                    <div class="about-chip-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="about-chip-text">
+                        <h4>100%</h4>
+                        <p>Client Satisfaction</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-text-col">
+                <span class="label" data-r="u">About Me</span>
+                <h2 class="heading-lg" data-r="u" data-d="1">Meet Your<br>Designer.</h2>
+                <p class="body" data-r="u" data-d="2">
+                    <strong>Hi, I'm Shabir.</strong> I combine clean, modern graphic design with AI&#8209;powered strategy to build completely hands&#8209;off content systems — and I also build premium, high&#8209;converting websites from scratch.
+                </p>
+                <p class="body" data-r="u" data-d="3">
+                    Whether you need a full website, an Instagram overhaul, or a complete digital presence — I build the visuals and platforms that make your brand <strong>impossible to ignore</strong>. From local cafés to universities, I've delivered results that speak for themselves.
+                </p>
+                <div class="about-stats" data-r="u" data-d="4">
+                    <div class="about-stat">
+                        <h3 data-count="50">0<em>+</em></h3>
+                        <p>Projects</p>
+                    </div>
+                    <div class="about-stat">
+                        <h3 data-count="30">0<em>+</em></h3>
+                        <p>Clients</p>
+                    </div>
+                    <div class="about-stat">
+                        <h3 data-count="100">0<em>%</em></h3>
+                        <p>Satisfaction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+    <div class="wrap">
+        <div class="services-top">
+            <div class="services-top-left">
+                <span class="label" data-r="u">Services</span>
+                <h2 data-r="u" data-d="1">Built for<br>Growth.</h2>
+            </div>
+            <div class="services-top-right" data-r="u" data-d="2">
+                <p>From scroll&#8209;stopping social content to full website builds — everything your business needs to win online.</p>
+            </div>
+        </div>
+        <div class="services-cards">
+            <div class="s-card" data-r="u" data-d="1">
+                <div class="s-card-num">01</div>
+                <h3>Custom Content Creation</h3>
+                <p>High-quality Instagram/Facebook posts, Reels covers, and Canva templates — all designed specifically for your brand.</p>
+            </div>
+            <div class="s-card" data-r="u" data-d="2">
+                <div class="s-card-num">02</div>
+                <h3>AI-Assisted Strategy</h3>
+                <p>Smart captions, data-driven hashtag research, and 30-day content calendars — generated with AI, refined by a real designer.</p>
+            </div>
+            <div class="s-card" data-r="u" data-d="3">
+                <div class="s-card-num">03</div>
+                <h3>Brand Identity</h3>
+                <p>Profile makeovers, story highlight covers, and cover photos that build instant trust and premium recognition.</p>
+            </div>
+            <div class="s-card" data-r="u" data-d="4">
+                <div class="s-card-num">04</div>
+                <h3>Website Development</h3>
+                <p>Premium landing pages, e-commerce stores, and business websites — designed to convert visitors into paying customers.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WEBSITES SHOWCASE -->
+<section class="websites" id="websites">
+    <div class="wrap">
+        <div class="websites-header">
+            <span class="label" data-r="u">Web Development</span>
+            <h2 data-r="u" data-d="1">Websites<br>We Build.</h2>
+            <p data-r="u" data-d="2">Beyond social media — we also craft premium, high&#8209;converting websites for businesses that want to stand out online.</p>
+        </div>
+        <div class="websites-grid">
+            <!-- Card 1 -->
+            <a href="https://uschocolate.netlify.app" target="_blank" class="web-card" data-r="u" data-d="1">
+                <div class="web-card-bar">
+                    <span class="web-dot web-dot--r"></span>
+                    <span class="web-dot web-dot--y"></span>
+                    <span class="web-dot web-dot--g"></span>
+                    <span class="web-card-url">uschocolate.netlify.app</span>
+                </div>
+                <div class="web-card-body">
+                    <div class="web-card-category">E-Commerce</div>
+                    <h3>US Chocolate</h3>
+                    <p>Premium custom chocolate gifting experience. Handcrafted in Swat, delivered across Pakistan.</p>
+                    <span class="web-card-link">
+                        Visit Site
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                    </span>
+                </div>
+            </a>
+            <!-- Card 2 -->
+            <a href="https://ueas.edu.pk" target="_blank" class="web-card" data-r="u" data-d="2">
+                <div class="web-card-bar">
+                    <span class="web-dot web-dot--r"></span>
+                    <span class="web-dot web-dot--y"></span>
+                    <span class="web-dot web-dot--g"></span>
+                    <span class="web-card-url">ueas.edu.pk</span>
+                </div>
+                <div class="web-card-body">
+                    <div class="web-card-category">Education</div>
+                    <h3>UEAS Swat</h3>
+                    <p>Official university website for the University of Engineering and Applied Sciences, Swat.</p>
+                    <span class="web-card-link">
+                        Visit Site
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                    </span>
+                </div>
+            </a>
+            <!-- Card 3 -->
+            <a href="https://shabir-ahmad.netlify.app" target="_blank" class="web-card" data-r="u" data-d="3">
+                <div class="web-card-bar">
+                    <span class="web-dot web-dot--r"></span>
+                    <span class="web-dot web-dot--y"></span>
+                    <span class="web-dot web-dot--g"></span>
+                    <span class="web-card-url">shabir-ahmad.netlify.app</span>
+                </div>
+                <div class="web-card-body">
+                    <div class="web-card-category">Portfolio</div>
+                    <h3>Personal Portfolio</h3>
+                    <p>AI Engineer & Tech Entrepreneur portfolio — intelligent solutions at the intersection of ML and Web Architecture.</p>
+                    <span class="web-card-link">
+                        Visit Site
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                    </span>
+                </div>
+            </a>
+            <!-- Card 4 -->
+            <a href="https://kabal-solar.netlify.app" target="_blank" class="web-card" data-r="u" data-d="4">
+                <div class="web-card-bar">
+                    <span class="web-dot web-dot--r"></span>
+                    <span class="web-dot web-dot--y"></span>
+                    <span class="web-dot web-dot--g"></span>
+                    <span class="web-card-url">kabal-solar.netlify.app</span>
+                </div>
+                <div class="web-card-body">
+                    <div class="web-card-category">Business</div>
+                    <h3>Kabal Solar Company</h3>
+                    <p>Solar panels & electric geysers. Lowest cost, fastest installation & 5-star local support in Swat.</p>
+                    <span class="web-card-link">
+                        Visit Site
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="work">
+    <div class="wrap">
+        <div class="portfolio-header">
+            <span class="label" data-r="u">Portfolio</span>
+            <h2 data-r="u" data-d="1">Recent Work.</h2>
+            <p data-r="u" data-d="2">Designs crafted for real businesses. Your brand could be next.</p>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="portfolio-scroll" id="portfolioScroll">
+            <div class="p-card" data-r="s" data-d="1">
+                <img src="assets/portfolio-coffee.png" alt="Coffee shop design">
+                <div class="p-card-info"><h4>Artisan Coffee Co.</h4><p>Content Design</p></div>
+            </div>
+            <div class="p-card" data-r="s" data-d="2">
+                <img src="assets/portfolio-restaurant.png" alt="Restaurant design">
+                <div class="p-card-info"><h4>Urban Bistro</h4><p>Brand Identity</p></div>
+            </div>
+            <div class="p-card" data-r="s" data-d="3">
+                <img src="assets/portfolio-boutique.png" alt="Boutique design">
+                <div class="p-card-info"><h4>Noir Boutique</h4><p>Instagram Strategy</p></div>
+            </div>
+            <div class="p-card" data-r="s" data-d="4">
+                <img src="assets/portfolio-branding.png" alt="Brand makeover">
+                <div class="p-card-info"><h4>Fresh Eats</h4><p>Full Makeover</p></div>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            Drag to explore
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+    <div class="wrap">
+        <div class="test-header">
+            <div class="test-header-row">
+                <div>
+                    <span class="label" data-r="u">Testimonials</span>
+                    <h2 data-r="u" data-d="1">What Clients<br>Say.</h2>
+                    <p data-r="u" data-d="2">Real feedback from real businesses. Your review could be here too.</p>
+                </div>
+                <button class="btn-review" id="openReviewBtn" data-r="u" data-d="3">
+                    Leave a Review
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="test-grid" id="testGrid">
+            <!-- Default testimonials -->
+            <div class="test-card" data-r="u" data-d="1">
+                <div class="test-stars">
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <blockquote>Shabir completely transformed our Instagram. We went from 200 followers to over 1,500 in two months. The content he creates is professional and perfectly on-brand.</blockquote>
+                <div class="test-author">
+                    <div class="test-avatar">AK</div>
+                    <div class="test-author-info">
+                        <h4>Ahmed Khan</h4>
+                        <p>Owner, Urban Café Swat</p>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card" data-r="u" data-d="2">
+                <div class="test-stars">
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <blockquote>The website Shabir built for us looks absolutely premium. Our competitors are jealous. He delivered fast and the design is exactly what we wanted.</blockquote>
+                <div class="test-author">
+                    <div class="test-avatar">FA</div>
+                    <div class="test-author-info">
+                        <h4>Faisal Ali</h4>
+                        <p>CEO, Kabal Solar Company</p>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card" data-r="u" data-d="3">
+                <div class="test-stars">
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-filled" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg viewBox="0 0 24 24"><polygon class="star-empty" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <blockquote>I was struggling to keep up with posting. Shabir gave me a full month of content in less than a week. It saved me hours and my engagement doubled.</blockquote>
+                <div class="test-author">
+                    <div class="test-avatar">SN</div>
+                    <div class="test-author-info">
+                        <h4>Sara Noor</h4>
+                        <p>Owner, Noor Boutique</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="reviewModal">
+    <div class="modal">
+        <button class="modal-close" id="closeReviewBtn">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <h3>Share Your Experience</h3>
+        <p>Your feedback helps other businesses make the right decision.</p>
+        <form id="reviewForm">
+            <div class="f-field">
+                <label for="rName">Your Name</label>
+                <input type="text" id="rName" placeholder="Ahmed Khan" required>
+            </div>
+            <div class="f-field">
+                <label for="rBusiness">Your Business</label>
+                <input type="text" id="rBusiness" placeholder="Urban Café Swat">
+            </div>
+            <div class="star-select">
+                <label>Your Rating</label>
+                <div class="star-select-row" id="starSelect">
+                    <div class="star-btn active" data-star="1"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                    <div class="star-btn active" data-star="2"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                    <div class="star-btn active" data-star="3"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                    <div class="star-btn active" data-star="4"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                    <div class="star-btn active" data-star="5"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                </div>
+            </div>
+            <div class="f-field">
+                <label for="rText">Your Review</label>
+                <textarea id="rText" placeholder="Tell us about your experience working with Shabir..." rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-p modal-submit">
+                Submit Review
+                <svg class="arrow-svg" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+    <div class="wrap">
+        <div class="process-header">
+            <span class="label" data-r="u">Process</span>
+            <h2 data-r="u" data-d="1">Three Steps.<br>Zero Hassle.</h2>
+            <p data-r="u" data-d="2">No complicated onboarding. Here's how we get your socials looking premium.</p>
+        </div>
+        <div class="timeline">
+            <div class="t-step" data-r="u" data-d="1">
+                <div class="t-step-marker"><span>01</span></div>
+                <div class="t-step-content">
+                    <h3>Discovery</h3>
+                    <p>We chat about your business goals, your target audience, and the look you want. Takes 15 minutes. No commitment.</p>
+                </div>
+            </div>
+            <div class="t-step" data-r="u" data-d="2">
+                <div class="t-step-marker"><span>02</span></div>
+                <div class="t-step-content">
+                    <h3>Creation</h3>
+                    <p>I design a complete 30-day content pack — posts, captions, hashtags, and a posting schedule tailored to your brand.</p>
+                </div>
+            </div>
+            <div class="t-step" data-r="u" data-d="3">
+                <div class="t-step-marker"><span>03</span></div>
+                <div class="t-step-content">
+                    <h3>Growth</h3>
+                    <p>You post the content, save hours every week, and watch your engagement and followers grow consistently.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+    <div class="contact-glow"></div>
+    <div class="wrap">
+        <div class="contact-inner">
+            <div class="contact-left">
+                <span class="label" data-r="u">Get Started</span>
+                <h2 data-r="u" data-d="1">Ready to Upgrade<br>Your Feed?</h2>
+                <p data-r="u" data-d="2">Fill out the form and I'll send you a free sample post designed for your business. No strings attached.</p>
+                <div class="c-links" data-r="u" data-d="3">
+                    <a href="mailto:shabirahmad.tech@gmail.com" class="c-link">
+                        <div class="c-link-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                        <span>shabirahmad.tech@gmail.com</span>
+                    </a>
+                    <a href="https://wa.me/923249116764?text=Hi%20Shabir!" target="_blank" class="c-link">
+                        <div class="c-link-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.88.36 1.75.7 2.57a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.82.34 1.69.57 2.57.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                        <span>+92 324 911 6764</span>
+                    </a>
+                    <a href="https://www.instagram.com/shabir.designs/" target="_blank" class="c-link">
+                        <div class="c-link-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+                        <span>@shabir.designs</span>
+                    </a>
+                </div>
+            </div>
+            <form class="c-form" id="contactForm" action="https://formspree.io/f/meevopkr" method="POST" data-r="r" data-d="2">
+                <h3>Claim Your Free Sample</h3>
+                <div class="f-field"><label for="name">Your Name</label><input type="text" id="name" name="name" placeholder="Sarah Khan" required></div>
+                <div class="f-field"><label for="business">Business Name</label><input type="text" id="business" name="business" placeholder="Urban Café Islamabad"></div>
+                <div class="f-field"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="sarah@urbancafe.pk" required></div>
+                <div class="f-field"><label for="message">About Your Business</label><textarea id="message" name="message" placeholder="What does your business do? What kind of content are you looking for?" rows="4"></textarea></div>
+                <button type="submit" class="btn btn-p f-submit" id="submitBtn">
+                    Claim My Free Sample
+                    <svg class="arrow-svg" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <div class="f-msg" id="fMsg"></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="wrap">
+        <div class="footer-left">
+            <img src="assets/Logo (1).png" alt="S Designs">
+            <p>&copy; 2026 S Designs by Shabir Ahmad</p>
+        </div>
+        <div class="footer-socials">
+            <a href="https://www.instagram.com/shabir.designs/" target="_blank" class="f-social" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61573277892570" target="_blank" class="f-social" aria-label="Facebook">
+                <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://wa.me/923249116764" target="_blank" class="f-social" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<!-- JS -->
+<script>
+(function(){
+    'use strict';
+
+    const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+
+    // === LOADER with animated counter ===
+    const loaderEl=$('#loader'),loaderCount=$('#loaderCount'),loaderFill=$('#loaderFill');
+    let count=0;
+    const loaderInterval=setInterval(()=>{
+        count+=Math.floor(Math.random()*8)+3;
+        if(count>=100){count=100;clearInterval(loaderInterval);setTimeout(()=>loaderEl.classList.add('done'),400)}
+        loaderCount.textContent=count;
+        loaderFill.style.width=count+'%';
+    },40);
+
+    // === CUSTOM CURSOR (desktop only) ===
+    const cursor=$('#cursor');
+    if(window.matchMedia('(pointer:fine)').matches){
+        cursor.style.display='block';
+        document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'});
+        $$('a,button,.s-card,.p-card,.t-step').forEach(el=>{
+            el.addEventListener('mouseenter',()=>cursor.classList.add('active'));
+            el.addEventListener('mouseleave',()=>cursor.classList.remove('active'));
+        });
+    }
+
+    // === NAV scroll ===
+    const nav=$('#nav'),waBtn=$('#waBtn');
+    window.addEventListener('scroll',()=>{
+        nav.classList.toggle('scrolled',scrollY>50);
+        waBtn.classList.toggle('show',scrollY>500);
+    },{passive:true});
+
+    // === MOBILE MENU ===
+    const burger=$('#burger'),navMenu=$('#navMenu');
+    burger.addEventListener('click',()=>{
+        const open=navMenu.classList.toggle('open');
+        burger.classList.toggle('open',open);
+        document.body.style.overflow=open?'hidden':'';
+    });
+    $$('#navMenu a').forEach(a=>a.addEventListener('click',()=>{
+        navMenu.classList.remove('open');burger.classList.remove('open');document.body.style.overflow='';
+    }));
+
+    // === SMOOTH SCROLL ===
+    $$('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click',e=>{
+            e.preventDefault();
+            const t=$(a.getAttribute('href'));
+            if(t){const y=t.getBoundingClientRect().top+scrollY-80;window.scrollTo({top:y,behavior:'smooth'})}
+        });
+    });
+
+    // === SCROLL REVEAL ===
+    const ro=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');ro.unobserve(e.target)}});
+    },{threshold:.05,rootMargin:'0px 0px -20px 0px'});
+    $$('[data-r]').forEach(el=>ro.observe(el));
+
+    // === ANIMATED COUNTERS ===
+    const co=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{if(e.isIntersecting){animCount(e.target);co.unobserve(e.target)}});
+    },{threshold:.5});
+    $$('[data-count]').forEach(el=>co.observe(el));
+
+    function animCount(el){
+        const target=+el.dataset.count;
+        const suffix=el.querySelector('em')?.textContent||'';
+        const dur=1400,start=performance.now();
+        (function tick(now){
+            const p=Math.min((now-start)/dur,1);
+            const eased=1-Math.pow(1-p,5);
+            el.innerHTML=Math.round(eased*target)+'<em>'+suffix+'</em>';
+            if(p<1)requestAnimationFrame(tick);
+        })(start);
+    }
+
+    // === 3D TILT on service cards ===
+    $$('.s-card').forEach(card=>{
+        card.addEventListener('mousemove',e=>{
+            const r=card.getBoundingClientRect();
+            const rx=((e.clientY-r.top-r.height/2)/r.height)*-8;
+            const ry=((e.clientX-r.left-r.width/2)/r.width)*8;
+            card.style.transform=`perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(10px)`;
+        });
+        card.addEventListener('mouseleave',()=>{card.style.transform=''});
+    });
+
+    // === PORTFOLIO DRAG SCROLL ===
+    const ps=$('#portfolioScroll');
+    let isDown=false,startX,scrollLeft;
+    ps.addEventListener('mousedown',e=>{isDown=true;ps.style.cursor='grabbing';startX=e.pageX-ps.offsetLeft;scrollLeft=ps.scrollLeft});
+    ps.addEventListener('mouseleave',()=>{isDown=false;ps.style.cursor='grab'});
+    ps.addEventListener('mouseup',()=>{isDown=false;ps.style.cursor='grab'});
+    ps.addEventListener('mousemove',e=>{
+        if(!isDown)return;e.preventDefault();
+        const x=e.pageX-ps.offsetLeft;
+        ps.scrollLeft=scrollLeft-(x-startX)*1.5;
+    });
+
+    // === TESTIMONIALS — Review Modal ===
+    const reviewModal=$('#reviewModal'),openBtn=$('#openReviewBtn'),closeBtn=$('#closeReviewBtn');
+    const reviewForm=$('#reviewForm'),testGrid=$('#testGrid');
+    let selectedStars=5;
+
+    // Open/close modal
+    openBtn.addEventListener('click',()=>{reviewModal.classList.add('open');document.body.style.overflow='hidden'});
+    closeBtn.addEventListener('click',()=>{reviewModal.classList.remove('open');document.body.style.overflow=''});
+    reviewModal.addEventListener('click',e=>{if(e.target===reviewModal){reviewModal.classList.remove('open');document.body.style.overflow=''}});
+
+    // Star rating selector
+    $$('#starSelect .star-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            selectedStars=+btn.dataset.star;
+            $$('#starSelect .star-btn').forEach((b,i)=>{
+                b.classList.toggle('active',i<selectedStars);
+            });
+        });
+    });
+
+    // Load saved reviews from localStorage
+    function loadReviews(){
+        const saved=JSON.parse(localStorage.getItem('sdesigns_reviews')||'[]');
+        saved.forEach(r=>appendReviewCard(r));
+    }
+
+    function appendReviewCard(r){
+        const card=document.createElement('div');
+        card.className='test-card user-submitted';
+        const stars=Array.from({length:5},(_, i)=>{
+            const cls=i<r.rating?'star-filled':'star-empty';
+            return `<svg viewBox="0 0 24 24"><polygon class="${cls}" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        }).join('');
+        const initials=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+        card.innerHTML=`
+            <div class="test-stars">${stars}</div>
+            <blockquote>${r.text}</blockquote>
+            <div class="test-author">
+                <div class="test-avatar">${initials}</div>
+                <div class="test-author-info">
+                    <h4>${r.name}</h4>
+                    ${r.business?`<p>${r.business}</p>`:''}
+                </div>
+            </div>`;
+        testGrid.appendChild(card);
+    }
+
+    loadReviews();
+
+    // Submit review
+    reviewForm.addEventListener('submit',e=>{
+        e.preventDefault();
+        const review={
+            name:$('#rName').value.trim(),
+            business:$('#rBusiness').value.trim(),
+            rating:selectedStars,
+            text:$('#rText').value.trim(),
+            date:new Date().toISOString()
+        };
+        if(!review.name||!review.text)return;
+
+        // Save to localStorage
+        const saved=JSON.parse(localStorage.getItem('sdesigns_reviews')||'[]');
+        saved.push(review);
+        localStorage.setItem('sdesigns_reviews',JSON.stringify(saved));
+
+        // Add card to grid
+        appendReviewCard(review);
+
+        // Close modal & reset
+        reviewForm.reset();
+        selectedStars=5;
+        $$('#starSelect .star-btn').forEach(b=>b.classList.add('active'));
+        reviewModal.classList.remove('open');
+        document.body.style.overflow='';
+
+        // Scroll to the new card
+        testGrid.lastElementChild.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+
+    // === FORM ===
+    const form=$('#contactForm'),fMsg=$('#fMsg');
+    form.addEventListener('submit',async e=>{
+        e.preventDefault();
+        const btn=$('#submitBtn'),orig=btn.innerHTML;
+        btn.innerHTML='Sending...';btn.disabled=true;btn.style.opacity='.5';
+        fMsg.className='f-msg';fMsg.style.display='none';
+        try{
+            const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
+            if(res.ok){
+                fMsg.textContent='✓  Sent! I\'ll get back to you within 24 hours with your free sample.';
+                fMsg.className='f-msg ok';fMsg.style.display='block';form.reset();
+            }else throw 0;
+        }catch{
+            fMsg.textContent='⚠  Something went wrong. WhatsApp me at +92 324 911 6764 or email shabirahmad.tech@gmail.com';
+            fMsg.className='f-msg err';fMsg.style.display='block';
+        }finally{btn.innerHTML=orig;btn.disabled=false;btn.style.opacity='1'}
+    });
+
+})();
+</script>
+</body>
+</html>
