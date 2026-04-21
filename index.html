@@ -169,7 +169,7 @@
 
         /* Main headline — full-width cinematic */
         .hero-title{
-            font-family:var(--ff);font-size:clamp(2.4rem,7.5vw,5.5rem);
+            font-family:var(--ff);font-size:clamp(1.8rem,7.5vw,5.5rem);
             font-weight:900;line-height:1;letter-spacing:-2px;
             text-transform:uppercase;margin-bottom:0;
         }
@@ -849,6 +849,10 @@
             .bn-item.active{color:var(--neon)}
             .bn-item.active svg{stroke:var(--neon);transform:translateY(-2px)}
             .bn-item:active{transform:scale(0.9)}
+
+            /* Architect Mobile Polish */
+            .arch-card{padding:30px 20px!important;gap:24px!important}
+            .hero-eyebrow{flex-wrap:wrap;gap:12px}
         }
         @media(max-width:480px){
             .about-stats{flex-direction:column}
@@ -1368,7 +1372,7 @@
 <!-- ARCHITECT SECTION (Cross-link to Portfolio) -->
 <section class="architect" style="padding:100px 0;background:var(--bg);border-top:1px solid rgba(255,255,255,0.03);">
     <div class="wrap">
-        <div style="background:var(--card);border:1px solid rgba(0,255,106,0.1);border-radius:24px;padding:50px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;">
+        <div class="arch-card" style="background:var(--card);border:1px solid rgba(0,255,106,0.1);border-radius:24px;padding:50px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;">
             <div style="position:absolute;top:-50%;left:-20%;width:300px;height:300px;background:radial-gradient(circle,var(--neon06),transparent 70%);pointer-events:none;"></div>
             <div style="max-width:600px;position:relative;z-index:2;">
                 <span class="label" style="margin-bottom:20px;">The Architect</span>
